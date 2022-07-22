@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+<!-- scanning for java-annotation -->
+    <context:component-scan base-package="annotation"/>
+<!-- scanning for properties -->
+    <context:property-placeholder location="classpath:mainProp.properties"/>
+<!-- default declaration -->
+    <bean id="Bow"
+          class="def.Weapon">
+        <constructor-arg index="0" value="2"/>
+        <constructor-arg index="1" value="5"/>
+    </bean>
+
+    <bean id="Sword"
+          class="def.Weapon">
+        <constructor-arg index="0" value="5"/>
+        <constructor-arg index="1" value="2"/>
+    </bean>
+
+    <bean id="MainHolder"
+          class="def.WeaponHolder">
+        <constructor-arg ref="Bow"/>
+    </bean>
+
+
+
+    <bean id="LongSword"
+          class="def.Weapon">
+        <property name="damage" value="4"/>
+        <property name="range" value="3"/>
+    </bean>
+
+    <bean id="ShortSword"
+          class="def.Weapon">
+        <property name="damage" value="${shortSword.damage}"/>
+        <property name="range" value="${shortSword.range}"/>
+    </bean>
+
+    <bean id="SecondHolder"
+          class="def.WeaponHolder">
+        <property name="weaponList">
+            <list>
+                <ref bean="LongSword"/>
+                <ref bean="ShortSword"/>
+            </list>
+        </property>
+    </bean>
+
+<!-- init, factory, destroy, private constructor -->
+    <bean id="IronChest"
+          class="def.Chestplate">
+        <constructor-arg index="0" value="50"/>
+        <constructor-arg index="1" value="100"/>
+    </bean>
+
+    <bean id="BronzeChest"
+          class="def.Chestplate"
+          scope="prototype">
+        <constructor-arg index="0" value="25"/>
+        <constructor-arg index="1" value="250"/>
+    </bean>
+
+
+    <bean id="InitChest"
+          class="def.Chestplate"
+          init-method="init"
+          destroy-method="destroy">
+<!--        for "prototype" scope destroy-method is not working     -->
+    </bean>
+
+    <bean id="FactoryChest"
+          class="def.Chestplate"
+          factory-method="getInstance">
+        <constructor-arg index="0" value="1"/>
+        <constructor-arg index="1" value="2"/>
+    </bean>
+</beans>
